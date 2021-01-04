@@ -1,9 +1,11 @@
 from flask_restful import Resource, reqparse, fields, marshal_with
-from flask import request, jsonify, g, url_for
-from flask_httpauth import HTTPBasicAuth
-from .models import User, Price, Product
+from flask import request, jsonify, abort
+import json
 
-from .authentication import auth
+from .models import User, Price, Product
+from .alchemyEncoder.encoder import AlchemyEncoder
+
+from .authentication import auth, authenticate
 
 product_put_args = reqparse.RequestParser()
 product_put_args.add_argument(
@@ -22,26 +24,10 @@ resource_fields = {
 
 
 class ProductResource(Resource):
-    # @auth.verify_password
-    # @marshal_with(resource_fields)
-    # def get(self, video_id):
-    #     result = VideoModel.query.filter_by(id=video_id).first()
-    #     return result
-
-    @auth.verify_password
     @marshal_with(resource_fields)
-    def put(self, video_id):
-        args = video_put_args.parse_args()
-        video = VideoModel(
-            id=video_id, name=args['name'], views=args['views'], likes=args['likes'])
+    def get(self, user_id):
+        if not authenticate(request):
+            abort(401, 'Not authorized, please provide correct credentials.')
 
-        db.session.add(video)
-        db.session.commit()
-
-        return video, 201
-
-    @auth.verify_password
-    @marshal_with(resource_fields)
-    def delete(self, video_id):
-        del videos[video_id]
-        return '', 204
+        result = Product.query.filter(Product.user_id==user_id).all()
+        return result
