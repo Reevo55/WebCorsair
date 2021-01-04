@@ -45,7 +45,7 @@ def get_resource():
 
 from endpoints.resources import ProductResource
 
-api.add_resource(ProductResource, '/products/<int:user_id>')
+api.add_resource(ProductResource, '/products')
 
 if __name__ == "__main__":
     app.run(debug=True)

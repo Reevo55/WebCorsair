@@ -5,7 +5,7 @@ import json
 from .models import User, Price, Product
 from .alchemyEncoder.encoder import AlchemyEncoder
 
-from .authentication import auth, authenticate
+from .authentication import auth, authenticate, getUserId
 
 product_put_args = reqparse.RequestParser()
 product_put_args.add_argument(
@@ -25,9 +25,10 @@ resource_fields = {
 
 class ProductResource(Resource):
     @marshal_with(resource_fields)
-    def get(self, user_id):
+    def get(self):
         if not authenticate(request):
             abort(401, 'Not authorized, please provide correct credentials.')
-
+        
+        user_id = getUserId(request)
         result = Product.query.filter(Product.user_id==user_id).all()
         return result
