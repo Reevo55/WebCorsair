@@ -5,12 +5,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.combining import OrTrigger
 
-from crawler.crawler import getPrice
+from logic.crawler.crawler import getPrice
 
-from endpoints.authentication import auth, g
+from logic.authentication import auth, g
 
-from endpoints.models import User, Product, Price
-from endpoints.models import db
+from logic.models import User, Product, Price
+from logic.models import db
 
 import time
 import settings
@@ -81,7 +81,7 @@ def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.username, 'user_id': g.user.id})
 
 # RESOURCES
-from endpoints.resources import (
+from logic.resources import (
     ProductResource,
     PricesByProductAPI,
     ProductsWithPrices

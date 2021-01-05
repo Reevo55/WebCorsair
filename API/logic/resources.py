@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse, fields, marshal_with
 from flask import request, jsonify, abort
 import json
 
+from .crawler.crawler import getPrice
 from .models import User, Price, Product, db
 from .alchemyEncoder.encoder import AlchemyEncoder
 
@@ -51,9 +52,18 @@ class ProductResource(Resource):
                           args['category'], args['expected_price'])
 
         db.session.add(product)
+        db.session.flush()
+
+        print(product.id)
+
+        value = getPrice(product.link)
+        price = Price(product.id, value)
+
+        db.session.add(price)
+
         db.session.commit()
 
-        return {'data': 'Success, product created'}, 201
+        return {'data': 'Success, product created', 'current_price' : value}, 201
 
     def delete(self, id):
         authenticatation(request)
