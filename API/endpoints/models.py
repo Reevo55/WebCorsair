@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from passlib.apps import custom_app_context as pwd_context
+import datetime
 
 db = SQLAlchemy()
 
@@ -42,12 +43,15 @@ class Product(db.Model):
     category = db.Column(db.String(100))
 
     prices = db.relationship('Price', backref='product')
+    
+    expected_price = db.Column(db.Integer)
 
-    def __init__(self, name, link, user_id, category):
+    def __init__(self, name, link, user_id, category, expected_price):
         self.name = name
         self.link = link
         self.user_id = user_id
         self.category = category
+        self.expected_price = expected_price
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
