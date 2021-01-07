@@ -111,7 +111,7 @@ celerybeat.pid
 
 # Settings
 
-settings.py
+API/settings.py
 
 # SageMath parsed files
 *.sage.py
