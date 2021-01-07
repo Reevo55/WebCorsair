@@ -27,6 +27,12 @@ resource_fields = {
     'expected_price': fields.Integer
 }
 
+res_post_fields = {
+    'name': fields.String,
+    'link': fields.String,
+    'category': fields.String,
+    'expected_price': fields.Integer
+}
 
 def authenticatation(request):
     if not authenticate(request):
@@ -63,7 +69,7 @@ class ProductResource(Resource):
 
         db.session.commit()
 
-        return {'data': 'Success, product created', 'current_price' : value}, 201
+        return {'data': 'Success, product created.', 'current_price' : value}, 201
 
     def delete(self, id):
         authenticatation(request)

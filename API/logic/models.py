@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+
 from passlib.apps import custom_app_context as pwd_context
 import datetime
 
@@ -45,6 +46,8 @@ class Product(db.Model):
     prices = db.relationship('Price', cascade="all,delete", backref='product')
     
     expected_price = db.Column(db.Integer)
+
+    notified = db.Column(db.Boolean, default=False)
 
     def __init__(self, name, link, user_id, category, expected_price):
         self.name = name
