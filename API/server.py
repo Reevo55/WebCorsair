@@ -42,8 +42,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFIC
 
 # DATABASE
 db.init_app(app)
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 # MAILS
 mail= Mail(app)
@@ -90,7 +90,7 @@ def cronJob():
 
 scheduler = BackgroundScheduler()
 
-trigger = OrTrigger([CronTrigger(hour=12), CronTrigger(hour=00)])
+trigger = OrTrigger([CronTrigger(hour=14), CronTrigger(hour=15)])
 scheduler.add_job(cronJob, trigger)
 # scheduler.add_job(cronJob, 'interval', seconds=10)  # Testing
 
@@ -121,13 +121,24 @@ def new_user():
 def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.username, 'user_id': g.user.id})
 
+@app.route('/users', methods=['GET'])
+def get_forecast():
+    product_id = request.json.get('product_id')
+
+    from logic.forecast.forecast import forecast
+
+    print(forecast(product_id))
+
+
+    
+
+
 # RESOURCES
 from logic.resources import (
     ProductResource,
     PricesByProductAPI,
     ProductsWithPrices
 )
-
 
 api.add_resource(ProductResource, '/products', '/products/<int:id>')
 api.add_resource(PricesByProductAPI, '/prices/<int:product_id>')

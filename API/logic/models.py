@@ -41,19 +41,20 @@ class Product(db.Model):
 
     created_at = db.Column(db.Date, default=_get_date)
     updated_at = db.Column(db.Date, onupdate=_get_date)
-    category = db.Column(db.String(100))
 
-    prices = db.relationship('Price', cascade="all,delete", backref='product')
+    prices = db.relationship('Price', cascade="all,delete", backref='products')
     
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+
     expected_price = db.Column(db.Integer)
 
     notified = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, link, user_id, category, expected_price):
+    def __init__(self, name, link, user_id, category_id, expected_price):
         self.name = name
         self.link = link
         self.user_id = user_id
-        self.category = category
+        self.category_id = category_id
         self.expected_price = expected_price
 
     def as_dict(self):
@@ -73,3 +74,16 @@ class Price(db.Model):
     def __init__(self, product_id, price):
         self.product_id = product_id
         self.price = price
+
+
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    product = db.relationship('Product', cascade="all,delete", backref='categories')
+
+    name = db.Column(db.String(120), nullable=False)
+
+    def __init__(self, name):
+        self.name = name

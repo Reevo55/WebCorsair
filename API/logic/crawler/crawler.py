@@ -11,5 +11,10 @@ def getPrice(url):
         price = ul.find("span", {"class" : "price"}).text
         myPrices.append(price)
 
-    minimalPrice = min(myPrices).replace(',', '.')
+    try: 
+        minimalPrice = min(myPrices).replace(',', '.')
+    except: 
+        print('Bad link')
+        minimalPrice = 9999
+
     return minimalPrice

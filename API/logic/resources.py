@@ -15,7 +15,7 @@ product_put_args.add_argument(
 product_put_args.add_argument(
     "link", type=str, help="link of the product", required=True)
 product_put_args.add_argument(
-    "category", type=str, help="category of the product", required=True)
+    "category", type=int, help="category of the product", required=True)
 product_put_args.add_argument(
     "expected_price", type=int, help="expected price of the product", required=True)
 
@@ -23,14 +23,14 @@ resource_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'link': fields.String,
-    'category': fields.String,
+    'category': fields.Integer,
     'expected_price': fields.Integer
 }
 
 res_post_fields = {
     'name': fields.String,
     'link': fields.String,
-    'category': fields.String,
+    'category': fields.Integer,
     'expected_price': fields.Integer
 }
 
@@ -103,7 +103,7 @@ resource_with_prices_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'link': fields.String,
-    'category': fields.String,
+    'category': fields.Integer,
     'expected_price': fields.Integer,
     'prices': fields.List(fields.Nested(price_fields))
 }
