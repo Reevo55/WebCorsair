@@ -10,6 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.combining import OrTrigger
 
+from logic.authentication import authenticate
 
 from logic.crawler.crawler import getPrice
 
@@ -90,7 +91,7 @@ def cronJob():
 
 scheduler = BackgroundScheduler()
 
-trigger = OrTrigger([CronTrigger(hour=14), CronTrigger(hour=15)])
+trigger = OrTrigger([CronTrigger(hour=17), CronTrigger(hour=18)])
 scheduler.add_job(cronJob, trigger)
 # scheduler.add_job(cronJob, 'interval', seconds=10)  # Testing
 
@@ -121,16 +122,19 @@ def new_user():
 def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.username, 'user_id': g.user.id})
 
-@app.route('/users', methods=['GET'])
+@app.route('/forecast', methods=['GET'])
 def get_forecast():
+    if not authenticate(request):
+        abort(401, 'Not authorized, please provide correct credentials.')
+
     product_id = request.json.get('product_id')
 
     from logic.forecast.forecast import forecast
 
     print(forecast(product_id))
 
+    return jsonify({'data' : forecast(product_id)})
 
-    
 
 
 # RESOURCES
@@ -145,5 +149,5 @@ api.add_resource(PricesByProductAPI, '/prices/<int:product_id>')
 api.add_resource(ProductsWithPrices, '/products/prices')
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False, threaded=True)
     # manager.run()
