@@ -1,0 +1,20 @@
+.Inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    transform: translate(-60%, -50%) scale(1.4);
+
+    & > * {
+        margin-bottom: 1rem;
+    }
+
+    .Buttons > * {
+        margin-right: 1rem;
+    }
+}

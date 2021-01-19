@@ -15,12 +15,10 @@ function ItemList(props) {
 
     const itemsHandler = () => {
         return props.items.map(item => {
-            console.log(props.categories.find(cat => {
-                console.log(cat.id)
-                console.log(item.category_id)
-                return cat.id == item.category}))
-            return <ListItem key={item.id} id={item.id} title={item.name} category={props.categories.find(cat => cat.id == item.category_id)} 
-                    expected_price={item.expected_price} link={item.link}/>
+            if(item != undefined) {
+                return <ListItem key={item.id} id={item.id} title={item.name} category={props.categories.find(cat => cat.id == item.category_id)} 
+                        expected_price={item.expected_price} link={item.link}/>
+            } else return null;
         })
     }
 

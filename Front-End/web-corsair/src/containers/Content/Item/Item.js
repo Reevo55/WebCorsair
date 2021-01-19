@@ -12,12 +12,6 @@ import { useHistory } from 'react-router-dom';
 
 const { Option } = Select;
 
-const selectBefore = (
-    <Select defaultValue="https://" className="select-before">
-        <Option value="https://">https://</Option>
-    </Select>
-);
-
 
 const antIcon = <LoadingOutlined style={{ fontSize: 60 }} spin />;
 
@@ -60,7 +54,7 @@ function Item(props) {
     const downloadForecast = () => {
         setForeCastLoading(true)
 
-        deleteAx(`http://127.0.0.1:5000/forecast/${item.id}`).then(res => {
+        get(`http://127.0.0.1:5000/forecast/${item.id}`).then(res => {
             if (res.status == 200) {
                 console.log(res.data)
                 setForeCastLoading(false)
@@ -81,13 +75,14 @@ function Item(props) {
     }
 
     const deleteItem = () => {
-        axios.delete(`http://127.0.0.1:5000/products/${item.id}`, {}, {
+        deleteAx(`http://127.0.0.1:5000/products/${item.id}`, {}, {
             auth: {
                 username: localStorage.getItem('username'),
                 password: localStorage.getItem('password')
             }
         }).then(res => {
             console.log(res)
+            alert("Item deleted!")
             history.push('/dashboard')
         })
 
@@ -114,12 +109,12 @@ function Item(props) {
                     <div className={style.BottomRow}>
                         <div className={style.LeftContainer}>
                             <div className={style.Link}>
-                                <Input addonBefore="https://" defaultValue={item.link} />
+                                <Input addonBefore="https://" defaultValue={item.link} readOnly/>
                                 <p>Please, it has to be link to ceneo product!</p>
                             </div>
 
                             <div className={style.Date}>
-                                <Input value={item.prices[0].created_at} />
+                                <Input value={item.prices[0].created_at} readOnly/>
                                 <p>First price fetch date</p>
                             </div>
                         </div>

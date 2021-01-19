@@ -29,11 +29,13 @@ export function getWithBody(adress, body) {
 }
 
 export function post(adress, postBody) {
-    return axios.post(adress, {
-        body: postBody,
-        auth: {
-            username: localStorage.getItem('username'),
-            password: localStorage.getItem('password')
-        }
-    })
+    console.log(JSON.stringify(postBody))
+    return fetch(adress, { 
+        method: 'POST', 
+        headers: new Headers({
+          'Authorization': 'Basic '+ btoa(`${localStorage.getItem('username')}:${localStorage.getItem('password')}`), 
+          'Content-Type': 'application/json'
+        }), 
+        body: JSON.stringify(postBody),
+    }).then(res => res.json());
 }

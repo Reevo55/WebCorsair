@@ -19,7 +19,7 @@ function ListItem({id, title, category, link, expected_price}) {
         <div className={style.Item} onClick={itemClick} id={id}>
             <a href={link} className={style.Title}>{title}</a>
             
-            <Tag className={style.Tag}>{category.name}</Tag>
+            {category.name != undefined && <Tag className={style.Tag}>{category.name}</Tag>}
 
             <h1 className={style.Price}>{expected_price} zł</h1>
         </div>

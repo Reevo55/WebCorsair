@@ -142,8 +142,6 @@ def get_forecast(id):
 
     return jsonify({'data' : forecast(product_id)})
 
-
-
 # RESOURCES
 from logic.resources import (
     ProductResource,

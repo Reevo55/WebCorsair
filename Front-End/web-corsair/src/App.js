@@ -15,8 +15,7 @@ function App() {
           <Main />
         </Route>
 
-        <Route path='/dashboard' >
-          <Content />
+        <Route path='/dashboard' component={Content}>
         </Route>
         
         <Route path='/auth' >

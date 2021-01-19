@@ -4,15 +4,17 @@ import { get } from '../../axios/request'
 import { Switch, Route } from 'react-router-dom'
 import ItemList from './ItemList/ItemList'
 import Item from './Item/Item'
+import ItemAdd from './ItemAdd/ItemAdd'
 
-function Content() {
+function Content(props) {
     const [items, setItems] = useState([])
     const [spinnLoading, setSpinnLoading] = useState(true)
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
         fetchItems()
-
+        console.log('location')
+        console.log(props.location)
         get('http://127.0.0.1:5000/categories').then(res => {
             console.log(res.data)
             if (res.status == 200) {
@@ -20,6 +22,10 @@ function Content() {
             }
         })
     }, [])
+
+    useEffect(() => {
+        fetchItems()
+    }, [props.location]);
 
     const fetchItems = () => {
         get('http://127.0.0.1:5000/products').then(res => {
@@ -38,7 +44,7 @@ function Content() {
                     <ItemList items={items} spinnLoading={spinnLoading} categories={categories} />
                 </Route>
                 <Route path="/dashboard/add">
-                    <h1>add item</h1>
+                    <ItemAdd categories={categories}/>
                 </Route>
                 <Route path="/dashboard/:product" component={Item}>
                 </Route>
