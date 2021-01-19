@@ -129,12 +129,12 @@ def get_auth():
     else:
         return jsonify({ 'data' : 'logged in'})
 
-@app.route('/forecast', methods=['GET'])
-def get_forecast():
+@app.route('/forecast/<int:id>', methods=['GET'])
+def get_forecast(id):
     if not authenticate(request):
         abort(401, 'Not authorized, please provide correct credentials.')
 
-    product_id = request.json.get('product_id')
+    product_id = id
 
     from logic.forecast.forecast import forecast
 

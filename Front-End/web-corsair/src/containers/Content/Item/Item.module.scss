@@ -1,0 +1,49 @@
+.TopRow {
+    display: flex;
+    flex-direction: row;
+
+    height: 40%;
+}
+
+.Chart {
+    width: 65%;
+    height: 100%;
+}
+
+.Right {
+    width: 35%;
+    height: 100%;
+    position: relative;
+}
+
+.Price {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: 200;
+    text-align: center;
+
+    .Value {
+        font-size: 4rem;
+        font-weight: 300;
+    }
+}
+
+.BottomRow {
+    display: flex;
+    flex-direction: row;
+    margin-left: 5rem;
+    margin-top: 5rem;
+    .LeftContainer {
+        width: 50%;
+
+        .Link {
+            width: 80%;
+        }
+        .Date {
+            width: 80%;
+        }
+    }
+}

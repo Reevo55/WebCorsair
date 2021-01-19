@@ -1,65 +1,144 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../Header/Header'
-import { get } from '../../../axios/request'
+import { get, getWithBody, post, deleteAx } from '../../../axios/request'
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { ResponsiveLine } from '@nivo/line'
+import style from './Item.module.scss'
+import { Input, Select, RangePicker, DatePicker, Button, Radio } from 'antd';
+import { SettingOutlined, DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+const { Option } = Select;
+
+const selectBefore = (
+    <Select defaultValue="https://" className="select-before">
+        <Option value="https://">https://</Option>
+    </Select>
+);
+
 
 const antIcon = <LoadingOutlined style={{ fontSize: 60 }} spin />;
 
 function Item(props) {
     const [item, setItem] = useState('')
     const [loading, setLoading] = useState(true)
-    const [data, setData] = useState('')
+    const [foreCastLoading, setForeCastLoading] = useState(false)
+    const [forecastData, setForecastData] = useState('')
+
+    const history = useHistory()
 
     useEffect(() => {
         get(`http://127.0.0.1:5000/product/prices/${props.match.params.product}`).then(res => {
             if (res.status == 200) {
+                console.log('data')
+                console.log(res.data[0])
                 setItem(res.data[0])
                 setLoading(false)
-                console.log(item)
             }
         })
     }, [])
 
     const itemToData = (item) => {
-        const data = {
+        const data = [{
             "id": item.name,
-            "color": 'red',
-            "data": [
-                item.prices.map( price => {
+            "color": "hsl(101, 70%, 50%)",
+            "data":
+                item.prices.map((price, index) => {
                     return {
-                        'x': price.price,
-                        'y': price.created_at 
+                        'y': price.price,
+                        'x': index
                     }
                 })
-            ]
+        }]
+
+        return data
+    }
+
+
+    const downloadForecast = () => {
+        setForeCastLoading(true)
+
+        deleteAx(`http://127.0.0.1:5000/forecast/${item.id}`).then(res => {
+            if (res.status == 200) {
+                console.log(res.data)
+                setForeCastLoading(false)
+                setForecastData(res.data)
+            }
+        }).catch(e => {
+            setForeCastLoading(false)
+        })
+    }
+
+    const forecast = () => {
+        if (forecastData != '') {
+            return <p>Price in 7 days from now: <span style={{ fontWeight: 500, fontSize: 32 }}>{forecastData.data}</span> zł. Remember this is just a forecast. Decide on your own what to do next.</p>
         }
+        else {
+            return <p>Forecast result</p>
+        }
+    }
 
-        console.log(data)
+    const deleteItem = () => {
+        axios.delete(`http://127.0.0.1:5000/products/${item.id}`, {}, {
+            auth: {
+                username: localStorage.getItem('username'),
+                password: localStorage.getItem('password')
+            }
+        }).then(res => {
+            console.log(res)
+            history.push('/dashboard')
+        })
 
-        setData(data)
     }
 
     return (
         <>
-            {loading ? <Spin indicator={antIcon}/>:
-            <>
-            <Header>
-                <h1 style={{fontWeight: 200, margin: 0}}>{item.name}</h1>
-            </Header>
-            
-            <div>
-                {MyResponsiveLine(data)}
-            </div>
+            {loading ? <Spin indicator={antIcon} /> :
+                <>
+                    <Header>
+                        <h1 style={{ fontWeight: 200, margin: 0 }}>{item.name}</h1>
+                        <div style={{ position: 'absolute', right: 5, top: '15%', cursor: 'pointer' }} onClick={deleteItem}><DeleteOutlined /></div>
+                    </Header>
 
-            </>
+                    <div className={style.TopRow}>
+                        <div className={style.Right}>
+                            <h2 className={style.Price}>Current price: <br /> <span className={style.Value}>{item.prices[item.prices.length - 1].price} zł</span></h2>
+                        </div>
+                        <div className={style.Chart}>
+                            {MyResponsiveLine(itemToData(item))}
+                        </div>
+                    </div>
+
+                    <div className={style.BottomRow}>
+                        <div className={style.LeftContainer}>
+                            <div className={style.Link}>
+                                <Input addonBefore="https://" defaultValue={item.link} />
+                                <p>Please, it has to be link to ceneo product!</p>
+                            </div>
+
+                            <div className={style.Date}>
+                                <Input value={item.prices[0].created_at} />
+                                <p>First price fetch date</p>
+                            </div>
+                        </div>
+                        <div className={style.RightContainer}>
+                            <p>Click to download forecast of price!</p>
+                            <Button type="primary" icon={<DownloadOutlined />} size='large' onClick={downloadForecast}> Forecast </Button>
+                            {
+                                foreCastLoading && <Spin indicator={antIcon} />
+                            }
+                            {!foreCastLoading && forecast()}
+                        </div>
+                    </div>
+                </>
             }
         </>
     )
 }
 
-const MyResponsiveLine = ({ data }) => (
+const MyResponsiveLine = (data) => (
     <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
@@ -73,7 +152,7 @@ const MyResponsiveLine = ({ data }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'transportation',
+            legend: 'days from the start of observation',
             legendOffset: 36,
             legendPosition: 'middle'
         }}
@@ -82,7 +161,7 @@ const MyResponsiveLine = ({ data }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'count',
+            legend: 'Price [zł]',
             legendOffset: -40,
             legendPosition: 'middle'
         }}

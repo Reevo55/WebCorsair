@@ -59,9 +59,6 @@ class ProductResource(Resource):
 
         db.session.add(product)
         db.session.flush()
-
-        print(product.id)
-
         value = getPrice(product.link)
         price = Price(product.id, value)
 

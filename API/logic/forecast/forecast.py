@@ -6,15 +6,13 @@ from datetime import datetime
 ORDINAL_CONST = 737800
 WEEK = 7
 
-conn = sqlite3.connect(
-    r'C:\Users\rados\Desktop\sem-4\jezyki-skryptowe\Projekt\WebCorsair\API\db\database.db')
-c = conn.cursor()
-
 # Do znalezienia wszystkich cen produktów w kategorii
 allPrices = "SELECT products.name, products.created_at, products.category_id, prices.price FROM products INNER JOIN prices ON products.id = prices.product_id WHERE products.category_id = (SELECT category_id FROM products WHERE products.id = 1);"
 
-
 def retriveAllPrices(product_id):
+    conn = sqlite3.connect(
+        r'C:\Users\rados\Desktop\sem-4\jezyki-skryptowe\Projekt\WebCorsair\API\db\database.db', check_same_thread=False)
+    c = conn.cursor()
     prices = []
     dates = []
 
@@ -26,7 +24,8 @@ def retriveAllPrices(product_id):
 
     y = np.array(prices)
     X = np.array(dates)
-
+    conn.commit()
+    conn.close()
     return X, y
 
 
@@ -50,6 +49,3 @@ def forecast(product_id):
     print(pred_y)
 
     return round(pred_y[0][0], 2)
-
-
-print(forecast(1))
