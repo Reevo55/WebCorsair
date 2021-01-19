@@ -1,0 +1,38 @@
+.Auth {
+    display: flex;
+    flex-direction: row;
+}
+
+.Left {
+    width: 60%;
+    height: 100vh;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.87) 1.01%, rgba(41, 41, 41, 0.838542) 108.84%);
+    position: relative;
+}
+
+.LogoContainer {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+}
+
+.Right {
+    width: 40%;
+    height: 100vh;
+    position: relative;
+}
+
+.Links {
+    position: absolute;
+    right: 10%;
+    top: 1%;
+}
+
+.MainComponent {
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    transform: scale(1.5) translate(0, -50%);
+}

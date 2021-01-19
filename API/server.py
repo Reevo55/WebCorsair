@@ -122,6 +122,13 @@ def new_user():
 def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.username, 'user_id': g.user.id})
 
+@app.route('/auth')
+def get_auth(): 
+    if not authenticate(request):
+        abort(401, 'Not authorized, please provide correct credentials.')
+    else:
+        return jsonify({ 'data' : 'logged in'})
+
 @app.route('/forecast', methods=['GET'])
 def get_forecast():
     if not authenticate(request):
@@ -141,12 +148,16 @@ def get_forecast():
 from logic.resources import (
     ProductResource,
     PricesByProductAPI,
-    ProductsWithPrices
+    ProductsWithPrices,
+    ProductWithPricesAPI,
+    Categories
 )
 
 api.add_resource(ProductResource, '/products', '/products/<int:id>')
 api.add_resource(PricesByProductAPI, '/prices/<int:product_id>')
 api.add_resource(ProductsWithPrices, '/products/prices')
+api.add_resource(ProductWithPricesAPI, '/product/prices/<int:product_id>')
+api.add_resource(Categories, '/categories')
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False, threaded=True)

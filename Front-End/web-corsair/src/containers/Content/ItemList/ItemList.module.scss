@@ -1,0 +1,9 @@
+.List {
+    margin: 1rem;
+    width: 100%;
+    height: 80vh;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

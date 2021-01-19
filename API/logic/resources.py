@@ -3,7 +3,7 @@ from flask import request, jsonify, abort
 import json
 
 from .crawler.crawler import getPrice
-from .models import User, Price, Product, db
+from .models import User, Price, Product, Category, db
 from .alchemyEncoder.encoder import AlchemyEncoder
 
 from .authentication import auth, authenticate, getUserId
@@ -23,14 +23,14 @@ resource_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'link': fields.String,
-    'category': fields.Integer,
+    'category_id': fields.Integer,
     'expected_price': fields.Integer
 }
 
 res_post_fields = {
     'name': fields.String,
     'link': fields.String,
-    'category': fields.Integer,
+    'category_id': fields.Integer,
     'expected_price': fields.Integer
 }
 
@@ -103,10 +103,19 @@ resource_with_prices_fields = {
     'id': fields.Integer,
     'name': fields.String,
     'link': fields.String,
-    'category': fields.Integer,
+    'category_id': fields.Integer,
     'expected_price': fields.Integer,
     'prices': fields.List(fields.Nested(price_fields))
 }
+
+class ProductWithPricesAPI(Resource):
+    @marshal_with(resource_with_prices_fields)
+    def get(self, product_id):
+        authenticatation(request)
+        user_id = getUserId(request)
+
+        result = Product.query.filter(Product.id == product_id and Product.user_id == user_id).all()
+        return result
 
 class ProductsWithPrices(Resource):
     @marshal_with(resource_with_prices_fields)
@@ -115,4 +124,15 @@ class ProductsWithPrices(Resource):
 
         user_id = getUserId(request)
         result = Product.query.filter(Product.user_id == user_id).all()
+        return result
+
+
+category_fields = {
+    'id': fields.Integer,
+    'name': fields.String
+}
+class Categories(Resource):
+    @marshal_with(category_fields)
+    def get(self):
+        result = Category.query.all()
         return result
