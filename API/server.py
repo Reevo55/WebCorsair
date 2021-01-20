@@ -20,6 +20,7 @@ from logic.models import User, Product, Price
 from logic.models import db
 
 from logic.emails.notifyUsers import notifyUser
+from logic.forecast.forecast import forecast
 
 import time
 import settings
@@ -29,12 +30,6 @@ app = Flask(__name__)
 api = Api(app)
 
 migrate = Migrate(app, db)
-
-
-# MANAGER
-
-# manager = Manager(app)
-# manager.add_command('db', MigrateCommand)
 
 
 # CONFIG
@@ -136,8 +131,6 @@ def get_forecast(id):
 
     product_id = id
 
-    from logic.forecast.forecast import forecast
-
     print(forecast(product_id))
 
     return jsonify({'data' : forecast(product_id)})
@@ -159,4 +152,4 @@ api.add_resource(Categories, '/categories')
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False, threaded=True)
-    # manager.run()
+

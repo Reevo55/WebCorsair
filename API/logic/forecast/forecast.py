@@ -2,16 +2,17 @@ import sqlite3
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
+import os
 
 ORDINAL_CONST = 736000
-INTERVAL = 7
+WEEK = 7
 
-# Do znalezienia wszystkich cen produktów w kategorii
-allPrices = "SELECT products.name, products.created_at, products.category_id, prices.price FROM products INNER JOIN prices ON products.id = prices.product_id WHERE products.category_id = (SELECT category_id FROM products WHERE products.id = 1);"
+dirname = os.path.dirname(__file__)
+path = os.path.dirname(os.path.dirname(dirname))
+dbpath = os.path.join(path, 'db','database.db')
 
 def retriveAllPrices(product_id):
-    conn = sqlite3.connect(
-        r'C:\Users\rados\Desktop\sem-4\jezyki-skryptowe\Projekt\WebCorsair\API\db\database.db', check_same_thread=False)
+    conn = sqlite3.connect(dbpath, check_same_thread=False)
     c = conn.cursor()
     prices = []
     dates = []
@@ -44,7 +45,7 @@ def forecast(product_id):
     print(f"Bias: {bias}")
 
     currDate = datetime.now().toordinal() - ORDINAL_CONST
-    new_X = np.array([[currDate + INTERVAL]])
+    new_X = np.array([[currDate + WEEK]])
     pred_y = reg.predict(new_X)
     print(pred_y)
 
