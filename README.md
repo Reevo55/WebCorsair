@@ -8,7 +8,7 @@ Aplikacja została stworzona w celu umożliwienia użytkownikom, śledzenie cen 
 Kolejną funkcją aplikacji jest możliwość przewidzenia ceny. Dzięki użyciu regresji liniowej, wykrywam tendencje ceny, na podstawie tego jaka cena powinna wg. predykcji być za tydzień, dzięki temu użytkownik może podjąć bardziej świadomą decyzje dotyczącą zakupu.
 
 
-####Back End
+#### Back End
 # Wykorzystane biblioteki
 
 Lista:
