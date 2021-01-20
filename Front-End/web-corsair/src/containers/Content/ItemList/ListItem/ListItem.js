@@ -21,7 +21,7 @@ function ListItem({id, title, category, link, expected_price}) {
             
             {category.name != undefined && <Tag className={style.Tag}>{category.name}</Tag>}
 
-            <h1 className={style.Price}>{expected_price} zł</h1>
+            <h1 className={style.Price}>Expected price: {expected_price} zł</h1>
         </div>
     )
 }

@@ -56,6 +56,9 @@ function ItemAdd(props) {
                 console.log(res)
                 setLoading(false)
                 alert(`Success! Product added, current price: ${res.current_price}`)
+            }).catch(e => {
+                alert(`Something went wrong!`)
+                setLoading(false)
             })
         }
         else {

@@ -3,8 +3,8 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from datetime import datetime
 
-ORDINAL_CONST = 737800
-WEEK = 7
+ORDINAL_CONST = 736000
+INTERVAL = 7
 
 # Do znalezienia wszystkich cen produktów w kategorii
 allPrices = "SELECT products.name, products.created_at, products.category_id, prices.price FROM products INNER JOIN prices ON products.id = prices.product_id WHERE products.category_id = (SELECT category_id FROM products WHERE products.id = 1);"
@@ -16,10 +16,11 @@ def retriveAllPrices(product_id):
     prices = []
     dates = []
 
-    for row in c.execute(f"SELECT products.name, products.created_at, products.category_id, prices.price FROM products INNER JOIN prices ON products.id = prices.product_id WHERE products.link = (SELECT link FROM products WHERE id = {product_id});"):
+    for row in c.execute(f"SELECT products.name, prices.created_at, products.category_id, prices.price FROM products INNER JOIN prices ON products.id = prices.product_id WHERE products.link = (SELECT link FROM products WHERE id = {product_id});"):
         date = datetime.strptime(row[1], '%Y-%m-%d')
         price = row[3]
         prices.append([price])
+        print(date)
         dates.append([date.toordinal() - ORDINAL_CONST])
 
     y = np.array(prices)
@@ -43,9 +44,12 @@ def forecast(product_id):
     print(f"Bias: {bias}")
 
     currDate = datetime.now().toordinal() - ORDINAL_CONST
-    print(currDate)
-    new_X = np.array([[currDate + WEEK]])
+    new_X = np.array([[currDate + INTERVAL]])
     pred_y = reg.predict(new_X)
     print(pred_y)
 
-    return round(pred_y[0][0], 2)
+    result = round(pred_y[0][0], 2)
+    if result < 0:
+        result = -1
+
+    return result

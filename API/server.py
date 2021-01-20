@@ -91,9 +91,9 @@ def cronJob():
 
 scheduler = BackgroundScheduler()
 
-trigger = OrTrigger([CronTrigger(hour=17), CronTrigger(hour=18)])
+trigger = OrTrigger([CronTrigger(hour=00), CronTrigger(hour=12)])
 scheduler.add_job(cronJob, trigger)
-# scheduler.add_job(cronJob, 'interval', seconds=10)  # Testing
+# scheduler.add_job(cronJob, 'interval', seconds=30)  # Testing
 
 scheduler.start()
 

@@ -66,7 +66,11 @@ function Item(props) {
     }
 
     const forecast = () => {
-        if (forecastData != '') {
+        console.log(forecastData)
+        if (forecastData.data == -1) {
+            return <p>Forecast cannot be done. Too few data to make any sensible result.</p>
+        }
+        else if (forecastData != '') {
             return <p>Price in 7 days from now: <span style={{ fontWeight: 500, fontSize: 32 }}>{forecastData.data}</span> zł. Remember this is just a forecast. Decide on your own what to do next.</p>
         }
         else {
@@ -109,12 +113,12 @@ function Item(props) {
                     <div className={style.BottomRow}>
                         <div className={style.LeftContainer}>
                             <div className={style.Link}>
-                                <Input addonBefore="https://" defaultValue={item.link} readOnly/>
+                                <Input defaultValue={item.link} readOnly />
                                 <p>Please, it has to be link to ceneo product!</p>
                             </div>
 
                             <div className={style.Date}>
-                                <Input value={item.prices[0].created_at} readOnly/>
+                                <Input value={item.prices[0].created_at} readOnly />
                                 <p>First price fetch date</p>
                             </div>
                         </div>
@@ -147,7 +151,7 @@ const MyResponsiveLine = (data) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'days from the start of observation',
+            legend: 'reading',
             legendOffset: 36,
             legendPosition: 'middle'
         }}
