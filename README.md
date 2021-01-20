@@ -1,4 +1,4 @@
-#### WebCorsair
+# WebCorsair
 Web Crawling Full Stack application created with Flask and React.
 
 # Cel aplikacji
@@ -8,8 +8,8 @@ Aplikacja została stworzona w celu umożliwienia użytkownikom, śledzenie cen 
 Kolejną funkcją aplikacji jest możliwość przewidzenia ceny. Dzięki użyciu regresji liniowej, wykrywam tendencje ceny, na podstawie tego jaka cena powinna wg. predykcji być za tydzień, dzięki temu użytkownik może podjąć bardziej świadomą decyzje dotyczącą zakupu.
 
 
-#### Back End
-# Wykorzystane biblioteki
+# Back End
+#### Wykorzystane biblioteki
 
 Lista:
 Flask – framework służący do pisania aplikacji webowych w języku Python. 
@@ -27,7 +27,7 @@ Numpy – biblioteka pomagająca w obsłudze dużych tablic oraz macierzy. Posł
 
 Apscheduler – biblioteka służąca do planowania egzekucji kodu w planowanym czasie.
 
-#### Front End
+# Front End
 
 React - biblioteka służąca do tworzenia stron internetowych
 
@@ -36,11 +36,11 @@ antdesign - biblioteka z gotowymi componentami, pomocna przy budowie UI
 novio - biblioteka służąca do tworzenia wykresów
 
 
-# Pokaz działania
+#### Pokaz działania
 
 https://youtu.be/BbTH-ir3dq0
 
-# Screen shots
+#### Screen shots
 
 ![image](https://user-images.githubusercontent.com/41492536/105156945-c4894e00-5b0c-11eb-8677-8d02c93e478b.png)
 ![image](https://user-images.githubusercontent.com/41492536/105156955-c81cd500-5b0c-11eb-8979-0654beaadfc8.png)
