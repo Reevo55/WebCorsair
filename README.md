@@ -1,6 +1,8 @@
 # WebCorsair
 Web Crawling Full Stack application created with Flask and React.
 
+Demonstration: https://youtu.be/BbTH-ir3dq0
+
 # Cel aplikacji
 
 Aplikacja została stworzona w celu umożliwienia użytkownikom, śledzenie cen produktów bez aktywnego udziału ludzkiego. Zamysłem było stworzenie systemu, do którego użytkownicy po zarejestrowaniu, będą mogli dodawać produkty, które chcą śledzić. 
